@@ -2,12 +2,14 @@
 
 只给 AI 一段成片，没有分镜，也没有现场照，让它倒推出拍摄现场：机位在哪、怎么动，人怎么走，光从哪来。然后在 Blender 里把现场搭回去，再用同样的机位“重拍”一遍，和原片逐帧对照。
 
-这个仓库收录了两个可复用的 Claude skill，对应两种还原思路：
+这个仓库收录了四个可复用的 Claude skill：前两个对应两种还原思路，后两个在还原好的现场上继续往下做：
 
 | | Skill | 一句话 | 案例 |
 |---|---|---|---|
 | 🎥 **长镜头还原** | [`film-set-reconstruction`](skills/film-set-reconstruction/SKILL.md) | 一台摄影机走完一条街，逐帧还原它的运动轨迹 | 《大事件》（2004）开场一镜到底，6′47″ |
-| 🎬 **多镜头群戏还原** | [`multishot-scene-set-reconstruction`](skills/multishot-scene-set-reconstruction/SKILL.md) | 把剪碎的镜头拼回一个房间，画出全部机位和灯位 | 《周处除三害》（2023）灵修堂，7′43″、138 个镜头 |
+| 🎬 **多镜头群戏还原** | [`multishot-scene-set-reconstruction`](skills/multishot-scene-set-reconstruction/SKILL.md) | 把剪碎的镜头拼回一个房间，画出全部机位和灯位 | 《周处除三害》（2023）灵修堂，7′43″、138 个镜头；《让子弹飞》（2010）鸿门宴，10′10″、308 个镜头 |
+| 🎞️ **拍摄轮次与剧组还原** | [`multishot-coverage-passes`](skills/multishot-coverage-passes/SKILL.md) | 在机位之外，再推出分几轮拍、每个镜头的摄影参数，搭出有演员走位和剧组的完整现场 | 《婚姻故事》（2019）公寓争吵戏，147 个镜头 → 30 个机位、14 轮拍摄 |
+| 💡 **布光拆解** | [`film-lighting-breakdown`](skills/film-lighting-breakdown/SKILL.md) | 在还原好的 3D 空间里从全黑开始逐层加光，做成竖版布光教学短片 | 需要先用上面的 skill 搭好场景和灯位 |
 
 <table>
 <tr>
@@ -258,12 +260,15 @@ AI 还查到了协拍资料：这里是台北旧士林分局的礼堂实景，�
 cd skills
 zip -r film-set-reconstruction.zip film-set-reconstruction
 zip -r multishot-scene-set-reconstruction.zip multishot-scene-set-reconstruction
+zip -r multishot-coverage-passes.zip multishot-coverage-passes
+zip -r film-lighting-breakdown.zip film-lighting-breakdown
 ```
 
 **在 Claude Code 里**：把文件夹复制到 `~/.claude/skills/`（个人）或项目里的 `.claude/skills/`（项目）。详见 [Claude Code 文档](https://code.claude.com/docs/en/skills)。
 
 ```bash
-cp -r skills/film-set-reconstruction skills/multishot-scene-set-reconstruction ~/.claude/skills/
+cp -r skills/film-set-reconstruction skills/multishot-scene-set-reconstruction \
+      skills/multishot-coverage-passes skills/film-lighting-breakdown ~/.claude/skills/
 ```
 
 ### 怎么开口
@@ -289,6 +294,8 @@ cp -r skills/film-set-reconstruction skills/multishot-scene-set-reconstruction ~
 - 长镜头：[`skills/film-set-reconstruction/scripts/README.md`](skills/film-set-reconstruction/scripts/README.md)
 - 多镜头：[`skills/multishot-scene-set-reconstruction/README.md`](skills/multishot-scene-set-reconstruction/README.md)
 
+`multishot-coverage-passes` 和 `film-lighting-breakdown` 目前只有 `SKILL.md`，算法和参数都写在正文里。
+
 ---
 
 ## 仓库结构
@@ -304,10 +311,14 @@ cp -r skills/film-set-reconstruction skills/multishot-scene-set-reconstruction ~
     │   ├── SKILL.md                         #   skill 正文
     │   ├── references/                      #   每一步的命令与参数、运行环境、踩过的坑
     │   └── scripts/                         #   可以改着用的脚本 + reference/（《大事件》原样代码）
-    └── multishot-scene-set-reconstruction/  # 多镜头群戏还原
-        ├── SKILL.md                         #   skill 正文
-        ├── README.md                        #   脚本索引
-        └── scripts/                         #   02_geometry … 07_showcase，按流程分组
+    ├── multishot-scene-set-reconstruction/  # 多镜头群戏还原
+    │   ├── SKILL.md                         #   skill 正文
+    │   ├── README.md                        #   脚本索引
+    │   └── scripts/                         #   02_geometry … 07_showcase，按流程分组
+    ├── multishot-coverage-passes/           # 拍摄轮次与剧组还原
+    │   └── SKILL.md
+    └── film-lighting-breakdown/             # 布光拆解短片
+        └── SKILL.md
 ```
 
 ---
@@ -336,10 +347,12 @@ cp -r skills/film-set-reconstruction skills/multishot-scene-set-reconstruction ~
 
 **Reconstructing a film's shooting set from the finished film alone, with AI.** No storyboards, no set photos: just the footage. Claude works out where every camera stood, how it moved, where the actors walked and where the light came from, rebuilds the set in Blender (through a Blender MCP add-on), and re-shoots it from the same camera positions to check against the original frame by frame.
 
-This repo contains two reusable Claude skills (documentation in Chinese):
+This repo contains four reusable Claude skills (documentation in Chinese):
 
 - **[`film-set-reconstruction`](skills/film-set-reconstruction/SKILL.md): for long takes.** One continuous camera move, reconstructed as a per-frame camera path. Uses SfM, vanishing points and known object sizes for scale, plus hand-solved keyframes where SfM breaks. People are detected, tracked, identified and placed on the ground. Example: the opening long take of *Breaking News* (Johnnie To, 2004), 6′47″, 9,768 frames.
-- **[`multishot-scene-set-reconstruction`](skills/multishot-scene-set-reconstruction/SKILL.md): for edited multi-camera scenes in one space.** Detect the cuts (muzzle flashes filtered out), group shots into camera setups, solve the room and every camera with a parametric bundle adjustment plus per-setup PnP, and infer the lighting with stated evidence and confidence. Output is a top-down set plan synced to the film's timeline. Example: the cult-hall scene in *The Pig, the Snake and the Pigeon* (2023): 138 shots, 25 camera setups, 9 light sources.
+- **[`multishot-scene-set-reconstruction`](skills/multishot-scene-set-reconstruction/SKILL.md): for edited multi-camera scenes in one space.** Detect the cuts (muzzle flashes filtered out), group shots into camera setups, solve the room and every camera with a parametric bundle adjustment plus per-setup PnP, and infer the lighting with stated evidence and confidence. Output is a top-down set plan synced to the film's timeline. Example: the cult-hall scene in *The Pig, the Snake and the Pigeon* (2023): 138 shots, 25 camera setups, 9 light sources. Also covers ring-track multi-camera setups with cameras moving within a shot, as in the banquet scene of *Let the Bullets Fly* (2010): 308 shots.
+- **[`multishot-coverage-passes`](skills/multishot-coverage-passes/SKILL.md): shooting passes and the full crew.** Builds on the multishot skill: infers which setups were shot together in each pass, measures per-shot camera parameters (shot size, focal length, focus and depth of field), and rebuilds the set with continuous actor blocking, camera operator, boom operator and inferred lighting, rendered as a vertical teaching video. Example: the apartment argument in *Marriage Story* (2019): 147 shots, 30 setups, 14 passes.
+- **[`film-lighting-breakdown`](skills/film-lighting-breakdown/SKILL.md): lighting breakdown shorts.** Starting from a reconstructed 3D set, lights are switched on one layer at a time from full black, shown in four stacked views (original frame, matching 3D shot, the set with its fixtures, and a technical card), ending with a comparison against the original.
 
 **Which one to use:** count the cuts. A single long, moving shot calls for the long-take skill. Many cuts within one fixed space call for the multishot skill.
 
