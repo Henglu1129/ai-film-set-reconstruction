@@ -1,6 +1,6 @@
 ---
-name: film-set-reconstruction
-description: 根据电影原片还原 3D 拍摄现场：反推摄影机运动、识别并摆放每个人物、在 Blender 里搭出场景，渲染「站在摄影机身后看 + 原片对照」的教学视频。用户想拆解或还原某部电影某个镜头（尤其是一镜到底的长镜头）的机位、走位、拍摄现场时使用。
+name: "film-set-longtake"
+description: "【拍摄现场·长镜头】根据电影原片还原一镜到底长镜头的 3D 拍摄现场：反推摄影机运动、识别并摆放每个人物、在 Blender 里搭出场景，渲染「站在摄影机身后看 + 原片对照」的教学视频。多镜头剪辑戏改用 film-set-multicam 或 film-set-multicam-crew。"
 ---
 
 # 根据原片还原 3D 拍摄现场

@@ -1,5 +1,5 @@
 import cv2, numpy as np, glob, json, sys
-exec(open('/mnt/skills/plugins/film-set-reconstruction/scripts/vp_focal.py').read().split('R = {}')[0].replace('cx, cy = 640.0, 277.0','cx, cy = 960.0, 402.0'))
+exec(open('/mnt/skills/plugins/film-set-longtake/scripts/vp_focal.py').read().split('R = {}')[0].replace('cx, cy = 640.0, 277.0','cx, cy = 960.0, 402.0'))
 out={}
 for sid in sys.argv[1:]:
     fn=glob.glob(f'frames_mid/s{int(sid):03d}_*.jpg')[0]
