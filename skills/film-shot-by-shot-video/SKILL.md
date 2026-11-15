@@ -12,6 +12,8 @@ description: "把一段电影拉片做成视频和拉片笔记：真实镜头边
 
 首个案例：李沧东《可能的爱》（2026）1:39:24–1:55:52，16分28秒，56 个镜头。成片 1080×1096，约 220MB。
 
+脚本和案例数据在 GitHub：[Henglu1129/ai-film-set-reconstruction](https://github.com/Henglu1129/ai-film-set-reconstruction) 的 `skills/film-shot-by-shot-video/`。如果当前环境里只有这份 SKILL.md、没有 `scripts/` 目录，先从仓库取脚本（GitHub 在白名单内），再按下面的步骤跑。
+
 ---
 
 ## 一、产出物（用户定稿的版式）
