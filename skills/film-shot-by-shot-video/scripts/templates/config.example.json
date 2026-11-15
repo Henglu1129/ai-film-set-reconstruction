@@ -1,0 +1,13 @@
+{
+  "work_dir": "/path/to/work",
+  "clip": "clip.mp4",
+  "offset_seconds": 0.0,
+  "film_title": "片名",
+  "film_title_en": "English Title",
+  "director": "导演",
+  "year": 2026,
+  "header_prefix": "AI 逐镜拉片",
+  "header_title": "导演《片名 English Title》",
+  "header_sub": "N个镜头 · M分S秒 · 原片H:MM:SS-H:MM:SS",
+  "font_light": "/path/to/fonts/LXGWWenKai-Light.ttf"
+}
