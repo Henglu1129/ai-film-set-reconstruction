@@ -35,6 +35,7 @@
 - [两种思路，分别适合什么样的片段](#两种思路分别适合什么样的片段)
 - [长镜头还原：一台摄影机，走完一条街](#长镜头还原一台摄影机走完一条街)
 - [多镜头还原：138 个镜头，拼回一个房间](#多镜头还原138-个镜头拼回一个房间)
+- [一组图看懂：服装、道具、灯光怎么还原](#一组图看懂服装道具灯光怎么还原)
 - [其他几个 skill：灯光、服装、道具、拉片](#其他几个-skill灯光服装道具拉片)
 - [怎么使用这些 skill](#怎么使用这些-skill)
 - [仓库结构](#仓库结构)
@@ -247,6 +248,73 @@ AI 还查到了协拍资料：这里是台北旧士林分局的礼堂实景，�
 
 <img src="docs/images/multishot/09-overview.jpg" width="700" alt="《周处除三害》灵修堂拍摄现场还原总图：25 个机位方案、9 组光源">
 
+## 一组图看懂：服装、道具、灯光怎么还原
+
+服装、美术道具、灯光三个 skill 的流程和成果，做成了 18 张竖图（1080×1440）：《花样年华》的旗袍、《布达佩斯大饭店》的道具、《边境杀手》的照明方案，每个部门 5 张，前面是总流程，最后是复盘。图里的检测框、尺寸、测光档数和表格都来自项目的实际数据。点开可以看大图。
+
+<table>
+<tr>
+<td width="33%"><a href="docs/images/departments/01-cover.jpg"><img src="docs/images/departments/01-cover.jpg" alt="封面：三部电影，三个部门"></a></td>
+<td width="33%"><a href="docs/images/departments/02-pipeline.jpg"><img src="docs/images/departments/02-pipeline.jpg" alt="总流程：看片 → 识别 → 考据 → 生成 3D → Blender → 交付"></a></td>
+<td width="33%"><a href="docs/images/departments/03-costume-shots.jpg"><img src="docs/images/departments/03-costume-shots.jpg" alt="服装 ①：505 个镜头逐格过，只认苏丽珍本人"></a></td>
+</tr>
+<tr>
+<td align="center"><b>封面</b><br>三部电影，三个部门</td>
+<td align="center"><b>总流程</b><br>看片 → 识别 → 考据 → 生成 3D → Blender → 交付</td>
+<td align="center"><b>服装 ①</b><br>505 个镜头逐格过，只认苏丽珍本人</td>
+</tr>
+<tr>
+<td width="33%"><a href="docs/images/departments/04-costume-detail.jpg"><img src="docs/images/departments/04-costume-detail.jpg" alt="服装 ②：一帧画面拆成 12 个部位，标实测 / 推断"></a></td>
+<td width="33%"><a href="docs/images/departments/05-costume-3d.jpg"><img src="docs/images/departments/05-costume-3d.jpg" alt="服装 ③：截图 → GPT-image-2 产品图 → Rodin 3D"></a></td>
+<td width="33%"><a href="docs/images/departments/06-costume-qa.jpg"><img src="docs/images/departments/06-costume-qa.jpg" alt="服装 ④：逐件对照原片，丢了细节就改提示词重跑"></a></td>
+</tr>
+<tr>
+<td align="center"><b>服装 ②</b><br>一帧画面拆成 12 个部位，标实测 / 推断</td>
+<td align="center"><b>服装 ③</b><br>截图 → GPT-image-2 产品图 → Rodin 3D</td>
+<td align="center"><b>服装 ④</b><br>逐件对照原片，丢了细节就改提示词重跑</td>
+</tr>
+<tr>
+<td width="33%"><a href="docs/images/departments/07-costume-output.jpg"><img src="docs/images/departments/07-costume-output.jpg" alt="服装 ⑤：19 件旗袍的 3D、工艺卡和交付物"></a></td>
+<td width="33%"><a href="docs/images/departments/08-props-detect.jpg"><img src="docs/images/departments/08-props-detect.jpg" alt="道具 ①：49 秒里圈出 75 项，按场编号"></a></td>
+<td width="33%"><a href="docs/images/departments/09-props-era.jpg"><img src="docs/images/departments/09-props-era.jpg" alt="道具 ②：每件写清年代、材质和形制"></a></td>
+</tr>
+<tr>
+<td align="center"><b>服装 ⑤</b><br>19 件旗袍的 3D、工艺卡和交付物</td>
+<td align="center"><b>道具 ①</b><br>49 秒里圈出 75 项，按场编号</td>
+<td align="center"><b>道具 ②</b><br>每件写清年代、材质和形制</td>
+</tr>
+<tr>
+<td width="33%"><a href="docs/images/departments/10-props-3d.jpg"><img src="docs/images/departments/10-props-3d.jpg" alt="道具 ③：截图 → 产品图 → 3D，以及两次翻车"></a></td>
+<td width="33%"><a href="docs/images/departments/11-props-ageing.jpg"><img src="docs/images/departments/11-props-ageing.jpg" alt="道具 ④：墙地面做旧拆成 4 道工序的样板"></a></td>
+<td width="33%"><a href="docs/images/departments/12-props-output.jpg"><img src="docs/images/departments/12-props-output.jpg" alt="道具 ⑤：75 项总览、标注图和清单"></a></td>
+</tr>
+<tr>
+<td align="center"><b>道具 ③</b><br>截图 → 产品图 → 3D，以及两次翻车</td>
+<td align="center"><b>道具 ④</b><br>墙地面做旧拆成 4 道工序的样板</td>
+<td align="center"><b>道具 ⑤</b><br>75 项总览、标注图和清单</td>
+</tr>
+<tr>
+<td width="33%"><a href="docs/images/departments/13-light-question.jpg"><img src="docs/images/departments/13-light-question.jpg" alt="灯光 ①：「正午阳光」其实是窗外的 12K 灯"></a></td>
+<td width="33%"><a href="docs/images/departments/14-light-cameras.jpg"><img src="docs/images/departments/14-light-cameras.jpg" alt="灯光 ②：69 个镜头 → 29 个机位方案"></a></td>
+<td width="33%"><a href="docs/images/departments/15-light-stage.jpg"><img src="docs/images/departments/15-light-stage.jpg" alt="灯光 ③：按 Deakins 布光图重建整个棚"></a></td>
+</tr>
+<tr>
+<td align="center"><b>灯光 ①</b><br>「正午阳光」其实是窗外的 12K 灯</td>
+<td align="center"><b>灯光 ②</b><br>69 个镜头 → 29 个机位方案</td>
+<td align="center"><b>灯光 ③</b><br>按 Deakins 布光图重建整个棚</td>
+</tr>
+<tr>
+<td width="33%"><a href="docs/images/departments/16-light-layers.jpg"><img src="docs/images/departments/16-light-layers.jpg" alt="灯光 ④：从全黑开始逐层点灯，和原片对照"></a></td>
+<td width="33%"><a href="docs/images/departments/17-light-output.jpg"><img src="docs/images/departments/17-light-output.jpg" alt="灯光 ⑤：教学视频、灯光表和同机位验收"></a></td>
+<td width="33%"><a href="docs/images/departments/18-recap.jpg"><img src="docs/images/departments/18-recap.jpg" alt="复盘：AI 做了什么，人做了什么，6 条经验"></a></td>
+</tr>
+<tr>
+<td align="center"><b>灯光 ④</b><br>从全黑开始逐层点灯，和原片对照</td>
+<td align="center"><b>灯光 ⑤</b><br>教学视频、灯光表和同机位验收</td>
+<td align="center"><b>复盘</b><br>AI 做了什么，人做了什么，6 条经验</td>
+</tr>
+</table>
+
 ## 其他几个 skill：灯光、服装、道具、拉片
 
 下面四个 skill 目前只有 `SKILL.md`，方法、参数和踩过的坑都写在正文里。
@@ -354,6 +422,7 @@ cp -r skills/film-* ~/.claude/skills/
 .
 ├── README.md
 ├── docs/images/                       # 本页配图
+│   ├── departments/                   #   服装、道具、灯光图解（18 张竖图）
 │   ├── long-take/
 │   ├── multishot/
 │   └── shot-video/
@@ -419,6 +488,8 @@ This repo collects eight reusable Claude skills for reconstructing how a film wa
 - **[`film-props-reconstruction`](skills/film-props-reconstruction/SKILL.md): art and props department.** Lists every costume, prop and set-ageing treatment in a scene, rebuilds them in 3D with the same pipeline, and renders scrolling prop cards under the original footage with fully labelled freeze frames. Example: four scenes of *The Grand Budapest Hotel* (2014), 75 items.
 - **[`film-shot-by-shot-breakdown`](skills/film-shot-by-shot-breakdown/SKILL.md): shot-by-shot analysis.** Detects real shot boundaries for a whole feature, has parallel agents read each shot's frames and burned-in subtitles, and assembles an HTML/PDF report with shot size, movement, content, dialogue and analysis. Example: *Farewell My Concubine*, 1,331 shots.
 - **[`film-shot-by-shot-video`](skills/film-shot-by-shot-video/SKILL.md): shot-by-shot analysis as a video.** Turns a scene into a breakdown video plus Markdown notes. Shot size, camera movement, lighting and colour are annotated directly on the footage: per-frame person outlines from YOLOv8 segmentation, rings with leader lines on light sources and dominant colours, and labels placed automatically where they avoid faces, bright areas and burned-in subtitles. Below the footage: action, performance, sound and an analysis note for each shot. Example: Lee Chang-dong's *Possible Love* (2026), a 16-minute scene, 56 shots.
+
+**Costume, props and lighting at a glance:** 18 vertical cards in [`docs/images/departments/`](docs/images/departments/) walk through the three department skills step by step, using the actual detection boxes, measurements and tables from each project.
 
 **Which set-reconstruction skill to use:** count the cuts. A single long, moving shot calls for the long-take skill. Many cuts within one fixed space call for the multishot skill.
 
