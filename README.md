@@ -2,7 +2,7 @@
 
 只给 AI 一段成片，没有分镜，也没有现场照，让它倒推出这场戏是怎么拍出来的：机位在哪、怎么动，人怎么走，光从哪来，演员穿什么，屋里摆了哪些道具。然后在 Blender 里把现场搭回去，再用同样的机位“重拍”一遍，和原片逐帧对照。
 
-这个仓库收录了 7 个可复用的 Claude skill，按剧组分工分成五类：拍摄现场、灯光、服装、美术道具、拉片：
+这个仓库收录了 8 个可复用的 Claude skill，按剧组分工分成五类：拍摄现场、灯光、服装、美术道具、拉片：
 
 | 类别 | Skill | 一句话 | 案例 |
 |---|---|---|---|
@@ -12,9 +12,10 @@
 | 💡 **灯光组** | [`film-lighting-breakdown`](skills/film-lighting-breakdown/SKILL.md) | 单镜头从全黑开始逐层加光；或整段戏的照明方案还原，全景逐盏点灯 | 《边境杀手》（2015）开场突袭戏；需要先用上面的 skill 搭好场景和灯位 |
 | 👗 **服装组** | [`film-costume-reconstruction`](skills/film-costume-reconstruction/SKILL.md) | 逐镜头核对主角穿过几件衣服，原片截图 → GPT-image-2 产品图 → Rodin 3D，出 3D 转台 + 工艺卡片的卡点视频和服装清单 | 《花样年华》（2000）苏丽珍旗袍 19 件 |
 | 🪑 **美术道具组** | [`film-props-reconstruction`](skills/film-props-reconstruction/SKILL.md) | 服装、实物道具、墙地面做旧全部列出并做成 3D，道具卡随原片滚动，定格时全标注 | 《布达佩斯大饭店》（2014）4 场戏，75 项道具 |
-| 📋 **拉片** | [`film-shot-by-shot-breakdown`](skills/film-shot-by-shot-breakdown/SKILL.md) | 整部片逐镜拉片：镜头边界检测得到真实镜头时长，逐镜写景别、运动、内容、台词和视听分析，出 HTML/PDF 报告 | 《霸王别姬》1331 镜、《爱丁顿》825 镜等 |
+| 📋 **拉片 · 图文报告** | [`film-shot-by-shot-breakdown`](skills/film-shot-by-shot-breakdown/SKILL.md) | 整部片逐镜拉片：镜头边界检测得到真实镜头时长，逐镜写景别、运动、内容、台词和视听分析，出 HTML/PDF 报告 | 《霸王别姬》1331 镜、《爱丁顿》825 镜等 |
+| 🎞️ **拉片 · 视频** | [`film-shot-by-shot-video`](skills/film-shot-by-shot-video/SKILL.md) | 一段戏做成拉片视频：景别、镜头运动、布光、色调直接标在原片画面上（人物轮廓 + 光源/主色指引线），下方是剧情、表演、声音、分析注释，另出拉片笔记 | 《可能的爱》（2026）16分28秒，56 个镜头 |
 
-**怎么选**：想知道“机位和走位”，看拍摄现场三件套（先数剪辑点，见下文）；想知道“光”，用灯光组；想知道“穿什么、摆什么”，用服装组和美术道具组；只想先把整部片拆成镜头表，用拉片。拉片报告也可以当其他 skill 的第一步，用来挑要还原的段落。
+**怎么选**：想知道“机位和走位”，看拍摄现场三件套（先数剪辑点，见下文）；想知道“光”，用灯光组；想知道“穿什么、摆什么”，用服装组和美术道具组；只想先把整部片拆成镜头表，用拉片图文报告；想发一条能直接看的拉片视频，用视频拉片。拉片报告也可以当其他 skill 的第一步，用来挑要还原的段落。
 
 <table>
 <tr>
@@ -276,6 +277,21 @@ AI 还查到了协拍资料：这里是台北旧士林分局的礼堂实景，�
 
 把整部电影或剧集拆成逐镜拉片报告：逐秒截帧 → 镜头边界检测（得到每个镜头的真实时长，而不是按固定 10 秒切块）→ 视觉抽检 → 多个 agent 并行逐镜读帧、读硬字幕 → 组装成带首帧图的 HTML/PDF。已经跑过《安李的遗嘱》《爱丁顿》《阿尔及尔之战》《霸王别姬》等长片。
 
+### 🎞️ 视频拉片：`film-shot-by-shot-video`
+
+<p align="center"><img src="docs/images/shot-video/hero.gif" width="480" alt="《可能的爱》视频拉片：人物轮廓逐帧跟随，布光、色调用圆圈和细线指到光源与主色"></p>
+
+在图文拉片的基础上，把一段戏做成可以直接发出去的拉片视频。以《可能的爱》1:39:24–1:55:52 为例：4K 片源在用户电脑上分块转码，云端做三路镜头检测并逐个核验分歧点（56 个镜头），硬字幕分段 OCR 后人工校对，用声音事件分类判断哪里有配乐、哪里只是虫鸣和海浪。每个镜头写 8 项：景别、镜头运动、布光、色调直接标在原片画面上，剧情、表演、声音、分析注释放在下方面板。
+
+画面标注是这个 skill 的重点：YOLOv8 逐帧分割人物，用细白线勾出轮廓来表示景别；布光在光源上画小圆圈，用细线连到说明；色调指向主色区域，标题旁是三个自动取出的主色色块。所有标签按「人物 + 脸 + 亮区 + 硬字幕」的占用图自动找空位，不挡脸。另出一份 Markdown 拉片笔记，含场景结构、镜头总表和逐镜笔记。
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/shot-video/01-study.jpg" alt="书房群像长镜头：五个人物轮廓，布光指向窗户"></td>
+<td width="50%"><img src="docs/images/shot-video/03-moon.jpg" alt="40 秒的满月空镜：布光圆圈落在月亮上"></td>
+</tr>
+</table>
+
 ---
 
 ## 怎么使用这些 skill
@@ -326,6 +342,7 @@ cp -r skills/film-* ~/.claude/skills/
 
 - 长镜头：[`skills/film-set-longtake/scripts/README.md`](skills/film-set-longtake/scripts/README.md)
 - 多镜头：[`skills/film-set-multicam/README.md`](skills/film-set-multicam/README.md)
+- 视频拉片：[`skills/film-shot-by-shot-video/README.md`](skills/film-shot-by-shot-video/README.md)
 
 其余 5 个 skill 目前只有 `SKILL.md`，算法和参数都写在正文里。
 
@@ -338,7 +355,8 @@ cp -r skills/film-* ~/.claude/skills/
 ├── README.md
 ├── docs/images/                       # 本页配图
 │   ├── long-take/
-│   └── multishot/
+│   ├── multishot/
+│   └── shot-video/
 └── skills/
     ├── film-set-longtake/             # 拍摄现场 · 长镜头
     │   ├── SKILL.md                   #   skill 正文
@@ -356,8 +374,13 @@ cp -r skills/film-* ~/.claude/skills/
     │   └── SKILL.md
     ├── film-props-reconstruction/     # 美术道具组：服装、道具、做旧
     │   └── SKILL.md
-    └── film-shot-by-shot-breakdown/   # 拉片：逐镜拉片报告
-        └── SKILL.md
+    ├── film-shot-by-shot-breakdown/   # 拉片：逐镜拉片报告（HTML/PDF）
+    │   └── SKILL.md
+    └── film-shot-by-shot-video/       # 拉片：拉片视频 + 拉片笔记
+        ├── SKILL.md
+        ├── README.md                  #   脚本索引
+        ├── scripts/                   #   01_device_encode … 08_export_notes + templates/
+        └── examples/possible-love/    #   《可能的爱》的逐镜分析、锚点和公开版笔记
 ```
 
 ---
@@ -386,7 +409,7 @@ cp -r skills/film-* ~/.claude/skills/
 
 **Reconstructing a film's shooting set from the finished film alone, with AI.** No storyboards, no set photos: just the footage. Claude works out where every camera stood, how it moved, where the actors walked and where the light came from, rebuilds the set in Blender (through a Blender MCP add-on), and re-shoots it from the same camera positions to check against the original frame by frame.
 
-This repo collects seven reusable Claude skills for reconstructing how a film was made (documentation in Chinese), grouped by crew department:
+This repo collects eight reusable Claude skills for reconstructing how a film was made (documentation in Chinese), grouped by crew department:
 
 - **[`film-set-longtake`](skills/film-set-longtake/SKILL.md): for long takes.** One continuous camera move, reconstructed as a per-frame camera path. Uses SfM, vanishing points and known object sizes for scale, plus hand-solved keyframes where SfM breaks. People are detected, tracked, identified and placed on the ground. Example: the opening long take of *Breaking News* (Johnnie To, 2004), 6′47″, 9,768 frames.
 - **[`film-set-multicam`](skills/film-set-multicam/SKILL.md): for edited multi-camera scenes in one space.** Detect the cuts (muzzle flashes filtered out), group shots into camera setups, solve the room and every camera with a parametric bundle adjustment plus per-setup PnP, and infer the lighting with stated evidence and confidence. Output is a top-down set plan synced to the film's timeline. Example: the cult-hall scene in *The Pig, the Snake and the Pigeon* (2023): 138 shots, 25 camera setups, 9 light sources. Also covers ring-track multi-camera setups with cameras moving within a shot, as in the banquet scene of *Let the Bullets Fly* (2010): 308 shots.
@@ -395,6 +418,7 @@ This repo collects seven reusable Claude skills for reconstructing how a film wa
 - **[`film-costume-reconstruction`](skills/film-costume-reconstruction/SKILL.md): costume department.** Counts every outfit the lead wears shot by shot, turns film stills into product photos with GPT-image-2 and then into 3D with Rodin, colour-corrects in Blender, and renders a beat-synced vertical video with turntables and annotated construction cards, plus a costume list. Example: Maggie Cheung's 19 cheongsams in *In the Mood for Love* (2000).
 - **[`film-props-reconstruction`](skills/film-props-reconstruction/SKILL.md): art and props department.** Lists every costume, prop and set-ageing treatment in a scene, rebuilds them in 3D with the same pipeline, and renders scrolling prop cards under the original footage with fully labelled freeze frames. Example: four scenes of *The Grand Budapest Hotel* (2014), 75 items.
 - **[`film-shot-by-shot-breakdown`](skills/film-shot-by-shot-breakdown/SKILL.md): shot-by-shot analysis.** Detects real shot boundaries for a whole feature, has parallel agents read each shot's frames and burned-in subtitles, and assembles an HTML/PDF report with shot size, movement, content, dialogue and analysis. Example: *Farewell My Concubine*, 1,331 shots.
+- **[`film-shot-by-shot-video`](skills/film-shot-by-shot-video/SKILL.md): shot-by-shot analysis as a video.** Turns a scene into a breakdown video plus Markdown notes. Shot size, camera movement, lighting and colour are annotated directly on the footage: per-frame person outlines from YOLOv8 segmentation, rings with leader lines on light sources and dominant colours, and labels placed automatically where they avoid faces, bright areas and burned-in subtitles. Below the footage: action, performance, sound and an analysis note for each shot. Example: Lee Chang-dong's *Possible Love* (2026), a 16-minute scene, 56 shots.
 
 **Which set-reconstruction skill to use:** count the cuts. A single long, moving shot calls for the long-take skill. Many cuts within one fixed space call for the multishot skill.
 

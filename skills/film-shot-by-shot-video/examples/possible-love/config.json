@@ -1,0 +1,13 @@
+{
+  "work_dir": "/path/to/work",
+  "clip": "clip.mp4",
+  "offset_seconds": 5964.0,
+  "film_title": "可能的爱",
+  "film_title_en": "Possible Love",
+  "director": "李沧东",
+  "year": 2026,
+  "header_prefix": "AI 逐镜拉片",
+  "header_title": "李沧东《可能的爱 Possible Love》",
+  "header_sub": "56个镜头 · 16分28秒 · 原片1:39:24-1:55:52",
+  "font_light": "/path/to/fonts/LXGWWenKai-Light.ttf"
+}
